@@ -20,7 +20,7 @@ local function BuildExitMessage(secondsLeft)
         return 'Redzone cikis [' .. secondsLeft .. 's]'
     end
 
-    if template:find('%%s', 1, true) then
+    if template:find('%%s') then
         return template:gsub('%%s', tostring(secondsLeft), 1)
     end
 
@@ -28,6 +28,8 @@ local function BuildExitMessage(secondsLeft)
 end
 
 local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
+    local alignRight = textConfig.alignRight ~= false
+
     SetTextFont(4)
     SetTextProportional(true)
     SetTextScale(scale, scale)
@@ -35,8 +37,12 @@ local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
     SetTextDropshadow(2, 2, 0, 0, 0, 255)
     SetTextEdge(2, 0, 0, 0, 255)
     SetTextOutline()
-    SetTextRightJustify(textConfig.alignRight ~= false)
-    SetTextWrap(0.0, x)
+    SetTextRightJustify(alignRight)
+    if alignRight then
+        SetTextWrap(0.0, x)
+    else
+        SetTextWrap(x, 1.0)
+    end
     BeginTextCommandDisplayText('STRING')
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandDisplayText(x, y)

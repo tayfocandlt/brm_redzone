@@ -39,11 +39,11 @@ CreateThread(function()
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
-    if not IsAutoFramework() and resourceName ~= GetCurrentResourceName() then
+    if not IsAutoFramework() then
         return
     end
 
-    if resourceName == GetCurrentResourceName() or resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
+    if resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
         DetectFramework()
     end
 end)

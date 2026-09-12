@@ -49,6 +49,8 @@ Config.Framework = 'auto'
 Desteklenen değerler:
 - `auto`
 - `esx`
+- `qb`
+- `qb-core`
 - `qbcore`
 - `qbx`
 - `standalone`

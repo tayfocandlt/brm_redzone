@@ -1,6 +1,6 @@
 # BRM Redzone & İllegal Satış Alanı Sistemi
 
-FiveM roleplay sunucuları için **ESX**, **QBCore** ve **QBX** tam uyumlu, haritada yarı saydam kırmızı radius çemberi oluşturan, sağ alt köşede doğrudan GTA V native 2D kırmızı gölgeli font ile uyarı veren %100 NUI/HTML bağımsız Redzone sistemi.
+FiveM roleplay sunucuları için **ESX**, **QBCore**, **QBX** ve **standalone** tam uyumlu, haritada yarı saydam kırmızı radius çemberi oluşturan, sağ alt köşede doğrudan GTA V native 2D kırmızı gölgeli font ile uyarı veren %100 NUI/HTML bağımsız Redzone sistemi.
 
 ## 🌟 Özellikler
 - **Framework uyumlu yapı**:
@@ -84,7 +84,8 @@ Config.Text = {
 ### Harita ve marker ayarları
 ```lua
 Config.Map = {
-    radiusAlpha = 85
+    radiusAlpha = 85,
+    radiusColor = 1
 }
 
 Config.DrawGroundMarker = true
@@ -95,6 +96,7 @@ Config.MarkerColor = { r = 239, g = 68, b = 68 }
 ```
 
 - `Config.Map.radiusAlpha = 0` yaparsanız radius blipi hiç oluşturulmaz.
+- `radiusColor`: Genel radius blip rengidir; zone içindeki `blip.color` değeri varsa onu kullanır.
 
 ### Zone ekleme
 ```lua

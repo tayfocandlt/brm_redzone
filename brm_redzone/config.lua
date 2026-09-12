@@ -18,7 +18,8 @@ Config.Text = {
 }
 
 Config.Map = {
-    radiusAlpha = 85
+    radiusAlpha = 85,
+    radiusColor = 1
 }
 
 Config.DrawGroundMarker = true

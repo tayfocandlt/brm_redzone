@@ -92,11 +92,12 @@ local function CreateRedzoneBlips()
         local center = GetZoneCenter(zone)
         local radiusBlip = nil
         local radiusAlpha = Clamp(Coalesce(Config.Map and Config.Map.radiusAlpha, 85), 0, 255)
+        local radiusColor = Coalesce((zone.blip and zone.blip.color), Coalesce(Config.Map and Config.Map.radiusColor, 1))
 
         if radiusAlpha > 0 then
             radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
             SetBlipRotation(radiusBlip, 0)
-            SetBlipColour(radiusBlip, 1)
+            SetBlipColour(radiusBlip, radiusColor)
             SetBlipAlpha(radiusBlip, radiusAlpha)
         end
 

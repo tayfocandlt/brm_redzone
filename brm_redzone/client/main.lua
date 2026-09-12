@@ -16,6 +16,15 @@ local function Coalesce(value, default)
     return value
 end
 
+local function ReplaceFirstLiteral(text, token, replacement)
+    local startPos, endPos = text:find(token, 1, true)
+    if not startPos then
+        return nil
+    end
+
+    return text:sub(1, startPos - 1) .. replacement .. text:sub(endPos + 1)
+end
+
 local function GetTextColor(state)
     local fallback = { r = 255, g = 255, b = 255, a = 255 }
     return textConfig[state] or fallback
@@ -28,12 +37,14 @@ local function BuildExitMessage(secondsLeft)
         return 'Redzone cikis [' .. secondsLeft .. 's]'
     end
 
-    if template:find('%%ss') then
-        return template:gsub('%%ss', tostring(secondsLeft) .. 's', 1)
+    local replacedMessage = ReplaceFirstLiteral(template, '%ss', tostring(secondsLeft) .. 's')
+    if replacedMessage then
+        return replacedMessage
     end
 
-    if template:find('%%s') then
-        return template:gsub('%%s', tostring(secondsLeft), 1)
+    replacedMessage = ReplaceFirstLiteral(template, '%s', tostring(secondsLeft))
+    if replacedMessage then
+        return replacedMessage
     end
 
     return template .. ' [' .. secondsLeft .. 's]'

@@ -49,10 +49,12 @@ Config.Framework = 'auto'
 Desteklenen değerler:
 - `auto`
 - `esx`
+- `es_extended`
 - `qb`
 - `qb-core`
 - `qbcore`
 - `qbx`
+- `qbx_core`
 - `standalone`
 
 ### Yazı ayarları

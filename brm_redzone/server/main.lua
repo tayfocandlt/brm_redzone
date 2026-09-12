@@ -1,24 +1,22 @@
 local Framework = nil
+local SupportedFrameworks = {
+    ['esx'] = true,
+    ['es_extended'] = true,
+    ['qb'] = true,
+    ['qb-core'] = true,
+    ['qbcore'] = true,
+    ['qbx'] = true,
+    ['qbx_core'] = true,
+    ['standalone'] = true
+}
 
-local function NormalizeFrameworkName(framework)
-    local aliases = {
-        ['qb'] = 'qbcore',
-        ['qb-core'] = 'qbcore',
-        ['qbcore'] = 'qbcore',
-        ['qbx'] = 'qbx',
-        ['qbx_core'] = 'qbx',
-        ['esx'] = 'esx',
-        ['es_extended'] = 'esx',
-        ['standalone'] = 'standalone'
-    }
-
-    return aliases[framework] or framework
+local function IsAutoFramework()
+    return not Config.Framework or Config.Framework == 'auto'
 end
 
 local function DetectFramework()
-    if Config.Framework and Config.Framework ~= 'auto' then
-        local normalizedFramework = NormalizeFrameworkName(Config.Framework)
-        Framework = normalizedFramework == 'qbcore' and 'qb' or normalizedFramework
+    if not IsAutoFramework() then
+        Framework = SupportedFrameworks[Config.Framework] and Config.Framework or 'standalone'
     elseif GetResourceState('qbx_core') == 'started' then
         Framework = 'qbx'
     elseif GetResourceState('qb-core') == 'started' then
@@ -37,12 +35,20 @@ CreateThread(function()
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
+    if not IsAutoFramework() and resourceName ~= GetCurrentResourceName() then
+        return
+    end
+
     if resourceName == GetCurrentResourceName() or resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
         DetectFramework()
     end
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
+    if not IsAutoFramework() then
+        return
+    end
+
     if resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
         DetectFramework()
     end

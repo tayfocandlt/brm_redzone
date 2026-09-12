@@ -2,6 +2,16 @@ local currentZoneIndex = nil
 local isInsideRedzone = false
 local exitTimerEnd = 0
 local zoneBlips = {}
+local textConfig = Config.Text or {}
+
+local function GetZoneCenter(zone)
+    return vector3(zone.coords.x, zone.coords.y, zone.coords.z)
+end
+
+local function GetTextColor(state)
+    local fallback = { r = 255, g = 255, b = 255, a = 255 }
+    return textConfig[state] or fallback
+end
 
 local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
     SetTextFont(4)
@@ -11,7 +21,7 @@ local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
     SetTextDropshadow(2, 2, 0, 0, 0, 255)
     SetTextEdge(2, 0, 0, 0, 255)
     SetTextOutline()
-    SetTextRightJustify(true)
+    SetTextRightJustify(textConfig.alignRight ~= false)
     SetTextWrap(0.0, x)
     BeginTextCommandDisplayText('STRING')
     AddTextComponentSubstringPlayerName(text)
@@ -20,12 +30,12 @@ end
 
 local function CreateRedzoneBlips()
     for i, zone in ipairs(Config.Zones) do
-        local center = vector3(zone.coords.x, zone.coords.y, zone.coords.z)
+        local center = GetZoneCenter(zone)
 
         local radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
         SetBlipRotation(radiusBlip, 0)
         SetBlipColour(radiusBlip, 1)
-        SetBlipAlpha(radiusBlip, 85)
+        SetBlipAlpha(radiusBlip, (Config.Map and Config.Map.radiusAlpha) or 85)
 
         local iconBlip = nil
         if zone.blip and zone.blip.enable then
@@ -80,7 +90,7 @@ CreateThread(function()
         local foundZoneIndex = nil
 
         for i, zone in ipairs(Config.Zones) do
-            local zCoords = vector3(zone.coords.x, zone.coords.y, zone.coords.z)
+            local zCoords = GetZoneCenter(zone)
             local dist = #(pCoords - zCoords)
 
             if dist <= zone.radius then
@@ -112,11 +122,32 @@ CreateThread(function()
 
         if isInsideRedzone then
             sleep = 0
-            DrawRedzoneText('Redzone icindesin', 0.975, 0.935, 0.95, 230, 20, 20, 255)
+            local color = GetTextColor('insideColor')
+            DrawRedzoneText(
+                textConfig.inside or 'Redzone icindesin',
+                textConfig.x or 0.975,
+                textConfig.y or 0.935,
+                textConfig.scale or 0.95,
+                color.r or 230,
+                color.g or 20,
+                color.b or 20,
+                color.a or 255
+            )
         elseif exitTimerEnd > GetGameTimer() then
             sleep = 0
             local leftSec = math.ceil((exitTimerEnd - GetGameTimer()) / 1000)
-            DrawRedzoneText('Redzone cikis [' .. leftSec .. 's]', 0.975, 0.935, 0.95, 240, 150, 20, 255)
+            local color = GetTextColor('exitColor')
+            local message = string.format(textConfig.exit or 'Redzone cikis [%ss]', leftSec)
+            DrawRedzoneText(
+                message,
+                textConfig.x or 0.975,
+                textConfig.y or 0.935,
+                textConfig.scale or 0.95,
+                color.r or 240,
+                color.g or 150,
+                color.b or 20,
+                color.a or 255
+            )
         end
 
         Wait(sleep)
@@ -132,7 +163,7 @@ CreateThread(function()
         local pCoords = GetEntityCoords(ped)
 
         for i, zone in ipairs(Config.Zones) do
-            local zCoords = vector3(zone.coords.x, zone.coords.y, zone.coords.z)
+            local zCoords = GetZoneCenter(zone)
             local dist = #(pCoords - zCoords)
 
             if dist <= (zone.radius + (Config.MarkerDrawDistance or 150.0)) then
@@ -142,8 +173,8 @@ CreateThread(function()
                     zCoords.x, zCoords.y, zCoords.z - 1.0,
                     0.0, 0.0, 0.0,
                     0.0, 0.0, 0.0,
-                    zone.radius * 2.0, zone.radius * 2.0, 4.0,
-                    239, 68, 68, 35,
+                    zone.radius * 2.0, zone.radius * 2.0, Config.MarkerHeight or 4.0,
+                    239, 68, 68, Config.MarkerAlpha or 35,
                     false, false, 2, false, nil, nil, false
                 )
             end
@@ -167,4 +198,8 @@ end)
 
 exports('IsPlayerInRedzone', function()
     return isInsideRedzone, currentZoneIndex
+end)
+
+exports('GetCurrentRedzone', function()
+    return currentZoneIndex and Config.Zones[currentZoneIndex] or nil, currentZoneIndex
 end)

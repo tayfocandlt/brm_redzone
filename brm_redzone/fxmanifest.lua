@@ -3,8 +3,8 @@ game 'gta5'
 lua54 'yes'
 
 author 'BRM'
-description 'Advanced Native Redzone & Illegal Area System for ESX, QBCore and QBX'
-version '1.0.0'
+description 'Framework-aware native redzone system for ESX, QBCore, QBX and standalone servers'
+version '1.1.0'
 
 shared_scripts {
     'config.lua'

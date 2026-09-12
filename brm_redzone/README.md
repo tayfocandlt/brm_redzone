@@ -3,18 +3,33 @@
 FiveM roleplay sunucuları için **ESX**, **QBCore** ve **QBX** tam uyumlu, haritada yarı saydam kırmızı radius çemberi oluşturan, sağ alt köşede doğrudan GTA V native 2D kırmızı gölgeli font ile uyarı veren %100 NUI/HTML bağımsız Redzone sistemi.
 
 ## 🌟 Özellikler
-- **Büyük Kırmızı Harita Çemberi & İkon**:
-  - `Config.Zones` içerisinde tanımlı `vector4` koordinatlarına göre haritada kırmızı şeffaf radius blipi ve özel kuru kafa ikonu.
-- **Sağ Alt Köşe Native 2D Gösterge**:
-  - **İçerideyken**: Sağ alt köşede kırmızı konturlu `Redzone icindesin` metni (içeride kalındığı sürece ekranda aktif kalır).
-  - **Çıkıldığında**: `Redzone cikis [15s]` metni 15 saniye geri sayar ve kaybolur.
-- **3 Adet İllegal Satış Konumu**:
-  1. Liman İllegal Satış Noktası
-  2. Hurdalık İllegal Satış Noktası
-  3. Cypress Flats İllegal Satış Noktası
+- **Framework uyumlu yapı**:
+  - `Config.Framework = 'auto'` ile **ESX**, **QBCore**, **QBX** ve standalone sunucularda otomatik çalışma.
+  - Framework kaynakları sonradan başlasa veya yeniden başlasa bile sunucu tarafında algılama güncellenir.
+- **Büyük kırmızı harita çemberi & ikon**:
+  - `Config.Zones` içinde tanımlı her alan için yarı saydam kırmızı radius blipi oluşturur.
+  - İsteğe bağlı ikon blipi ile bölge adı haritada gösterilir.
+- **Sağ alt köşe native 2D gösterge**:
+  - **İçerideyken**: GTA V native font ile kırmızı gölgeli `Redzone icindesin`.
+  - **Çıkıldığında**: `Redzone cikis [15s]` geri sayımı.
+  - Tamamen **NUI/HTML bağımsızdır**.
+- **Yer marker desteği**:
+  - Bölgeye yaklaşınca zeminde kırmızı yarı saydam marker görünür.
+- **Export desteği**:
+  - Client: oyuncunun redzone durumunu ve aktif bölgeyi alabilirsiniz.
+  - Server: aktif framework bilgisini ve zone listesini alabilirsiniz.
 - **Optimizasyon**:
-  - `0.00ms` idle CPU tüketimi.
-  - HTML / NUI yükü olmadan ultra hafif yapı.
+  - Uzakta daha uzun `Wait` süreleri kullanır.
+  - Hafif, native tabanlı ve ek UI bağımlılığı gerektirmez.
+
+## 📁 Dosya Yapısı
+```text
+brm_redzone/
+├── client/main.lua
+├── server/main.lua
+├── config.lua
+└── fxmanifest.lua
+```
 
 ## ⚙️ Kurulum
 1. `brm_redzone` klasörünü `resources` klasörünüze ekleyin.
@@ -22,3 +37,79 @@ FiveM roleplay sunucuları için **ESX**, **QBCore** ve **QBX** tam uyumlu, hari
    ```cfg
    ensure brm_redzone
    ```
+3. Gerekirse `config.lua` içinden framework ve zone ayarlarınızı düzenleyin.
+
+## 🛠️ Konfigürasyon
+
+### Framework seçimi
+```lua
+Config.Framework = 'auto'
+```
+
+Desteklenen değerler:
+- `auto`
+- `esx`
+- `qbcore`
+- `qbx`
+- `standalone`
+
+### Yazı ayarları
+```lua
+Config.Text = {
+    inside = 'Redzone icindesin',
+    exit = 'Redzone cikis [%ss]',
+    x = 0.975,
+    y = 0.935,
+    scale = 0.95
+}
+```
+
+### Harita ve marker ayarları
+```lua
+Config.Map = {
+    radiusAlpha = 85
+}
+
+Config.DrawGroundMarker = true
+Config.MarkerDrawDistance = 150.0
+Config.MarkerHeight = 4.0
+Config.MarkerAlpha = 35
+```
+
+### Zone ekleme
+```lua
+Config.Zones = {
+    {
+        name = 'Ornek Redzone',
+        coords = vector4(100.0, 200.0, 30.0, 0.0),
+        radius = 75.0,
+        blip = {
+            enable = true,
+            sprite = 437,
+            scale = 0.85,
+            color = 1,
+            label = 'Redzone - Ornek'
+        }
+    }
+}
+```
+
+## 📦 Export'lar
+
+### Client exports
+```lua
+local isInside, zoneIndex = exports['brm_redzone']:IsPlayerInRedzone()
+local zoneData, currentIndex = exports['brm_redzone']:GetCurrentRedzone()
+```
+
+### Server exports
+```lua
+local zones = exports['brm_redzone']:GetRedzoneList()
+local framework = exports['brm_redzone']:GetFramework()
+```
+
+## ✅ Uyum
+- ESX
+- QBCore
+- QBX
+- Standalone

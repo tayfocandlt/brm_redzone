@@ -6,8 +6,25 @@ Config.ExitDisplayTime = 15
 
 Config.SoundEffects = true
 
+Config.Text = {
+    inside = 'Redzone icindesin',
+    exit = 'Redzone cikis [%ss]',
+    x = 0.975,
+    y = 0.935,
+    scale = 0.95,
+    alignRight = true,
+    insideColor = { r = 230, g = 20, b = 20, a = 255 },
+    exitColor = { r = 240, g = 150, b = 20, a = 255 }
+}
+
+Config.Map = {
+    radiusAlpha = 85
+}
+
 Config.DrawGroundMarker = true
 Config.MarkerDrawDistance = 150.0
+Config.MarkerHeight = 4.0
+Config.MarkerAlpha = 35
 
 Config.Zones = {
     [1] = {

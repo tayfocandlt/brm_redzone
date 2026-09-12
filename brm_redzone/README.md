@@ -57,6 +57,8 @@ Desteklenen değerler:
 - `qbx_core`
 - `standalone`
 
+> Not: Alias değerler kullanılsa bile `GetFramework()` export'u her zaman normalize edilmiş şu değerlerden birini döndürür: `esx`, `qb`, `qbx`, `standalone`.
+
 ### Yazı ayarları
 ```lua
 Config.Text = {

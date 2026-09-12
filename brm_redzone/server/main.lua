@@ -1,13 +1,13 @@
 local Framework = nil
-local SupportedFrameworks = {
-    ['esx'] = true,
-    ['es_extended'] = true,
-    ['qb'] = true,
-    ['qb-core'] = true,
-    ['qbcore'] = true,
-    ['qbx'] = true,
-    ['qbx_core'] = true,
-    ['standalone'] = true
+local FrameworkAliases = {
+    ['esx'] = 'esx',
+    ['es_extended'] = 'esx',
+    ['qb'] = 'qb',
+    ['qb-core'] = 'qb',
+    ['qbcore'] = 'qb',
+    ['qbx'] = 'qbx',
+    ['qbx_core'] = 'qbx',
+    ['standalone'] = 'standalone'
 }
 
 local function IsAutoFramework()
@@ -16,7 +16,7 @@ end
 
 local function DetectFramework()
     if not IsAutoFramework() then
-        Framework = SupportedFrameworks[Config.Framework] and Config.Framework or 'standalone'
+        Framework = FrameworkAliases[Config.Framework] or 'standalone'
     elseif GetResourceState('qbx_core') == 'started' then
         Framework = 'qbx'
     elseif GetResourceState('qb-core') == 'started' then

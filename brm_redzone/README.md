@@ -94,6 +94,8 @@ Config.MarkerAlpha = 35
 Config.MarkerColor = { r = 239, g = 68, b = 68 }
 ```
 
+- `Config.Map.radiusAlpha = 0` yaparsanız radius blipi hiç oluşturulmaz.
+
 ### Zone ekleme
 ```lua
 Config.Zones = {

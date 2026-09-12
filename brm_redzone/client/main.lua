@@ -78,11 +78,15 @@ end
 local function CreateRedzoneBlips()
     for i, zone in ipairs(Config.Zones) do
         local center = GetZoneCenter(zone)
+        local radiusBlip = nil
+        local radiusAlpha = Coalesce(Config.Map and Config.Map.radiusAlpha, 85)
 
-        local radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
-        SetBlipRotation(radiusBlip, 0)
-        SetBlipColour(radiusBlip, 1)
-        SetBlipAlpha(radiusBlip, Coalesce(Config.Map and Config.Map.radiusAlpha, 85))
+        if radiusAlpha > 0 then
+            radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
+            SetBlipRotation(radiusBlip, 0)
+            SetBlipColour(radiusBlip, 1)
+            SetBlipAlpha(radiusBlip, radiusAlpha)
+        end
 
         local iconBlip = nil
         if zone.blip and zone.blip.enable then

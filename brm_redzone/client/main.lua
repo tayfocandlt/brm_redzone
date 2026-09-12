@@ -16,6 +16,18 @@ local function Coalesce(value, default)
     return value
 end
 
+local function Clamp(value, minValue, maxValue)
+    if value < minValue then
+        return minValue
+    end
+
+    if value > maxValue then
+        return maxValue
+    end
+
+    return value
+end
+
 local function ReplaceFirstLiteral(text, token, replacement)
     local startPos, endPos = text:find(token, 1, true)
     if not startPos then
@@ -79,7 +91,7 @@ local function CreateRedzoneBlips()
     for i, zone in ipairs(Config.Zones) do
         local center = GetZoneCenter(zone)
         local radiusBlip = nil
-        local radiusAlpha = Coalesce(Config.Map and Config.Map.radiusAlpha, 85)
+        local radiusAlpha = Clamp(Coalesce(Config.Map and Config.Map.radiusAlpha, 85), 0, 255)
 
         if radiusAlpha > 0 then
             radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
@@ -220,13 +232,14 @@ CreateThread(function()
             if dist <= (zone.radius + (Config.MarkerDrawDistance or 150.0)) then
                 sleep = 0
                 local markerColor = GetMarkerColor()
+                local markerAlpha = Clamp(Coalesce(Config.MarkerAlpha, 35), 0, 255)
                 DrawMarker(
                     1,
                     zCoords.x, zCoords.y, zCoords.z - 1.0,
                     0.0, 0.0, 0.0,
                     0.0, 0.0, 0.0,
                     zone.radius * 2.0, zone.radius * 2.0, Coalesce(Config.MarkerHeight, 4.0),
-                    Coalesce(markerColor.r, 239), Coalesce(markerColor.g, 68), Coalesce(markerColor.b, 68), Coalesce(Config.MarkerAlpha, 35),
+                    Coalesce(markerColor.r, 239), Coalesce(markerColor.g, 68), Coalesce(markerColor.b, 68), markerAlpha,
                     false, false, 2, false, nil, nil, false
                 )
             end

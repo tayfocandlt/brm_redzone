@@ -13,6 +13,20 @@ local function GetTextColor(state)
     return textConfig[state] or fallback
 end
 
+local function BuildExitMessage(secondsLeft)
+    local template = textConfig.exit
+
+    if type(template) ~= 'string' or template == '' then
+        return 'Redzone cikis [' .. secondsLeft .. 's]'
+    end
+
+    if template:find('%%s', 1, true) then
+        return template:gsub('%%s', tostring(secondsLeft), 1)
+    end
+
+    return template .. ' [' .. secondsLeft .. 's]'
+end
+
 local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
     SetTextFont(4)
     SetTextProportional(true)
@@ -137,7 +151,7 @@ CreateThread(function()
             sleep = 0
             local leftSec = math.ceil((exitTimerEnd - GetGameTimer()) / 1000)
             local color = GetTextColor('exitColor')
-            local message = string.format(textConfig.exit or 'Redzone cikis [%ss]', leftSec)
+            local message = BuildExitMessage(leftSec)
             DrawRedzoneText(
                 message,
                 textConfig.x or 0.975,

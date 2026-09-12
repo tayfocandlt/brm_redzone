@@ -60,9 +60,18 @@ Config.Text = {
     exit = 'Redzone cikis [%ss]',
     x = 0.975,
     y = 0.935,
-    scale = 0.95
+    scale = 0.95,
+    alignRight = true,
+    insideColor = { r = 230, g = 20, b = 20, a = 255 },
+    exitColor = { r = 240, g = 150, b = 20, a = 255 }
 }
 ```
+
+- `inside`: Bölge içindeyken gösterilen metin
+- `exit`: Çıkış geri sayım metni; `%s` yerine saniye değeri yazılır
+- `x`, `y`, `scale`: Native HUD konum ve ölçek ayarları
+- `alignRight`: Yazıyı sağ hizalı tutar
+- `insideColor`, `exitColor`: RGBA renk yapılandırması
 
 ### Harita ve marker ayarları
 ```lua

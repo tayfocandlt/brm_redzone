@@ -43,7 +43,7 @@ AddEventHandler('onResourceStart', function(resourceName)
         return
     end
 
-    if resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
+    if resourceName == GetCurrentResourceName() or resourceName == 'qbx_core' or resourceName == 'qb-core' or resourceName == 'es_extended' then
         DetectFramework()
     end
 end)

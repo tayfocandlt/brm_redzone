@@ -8,6 +8,14 @@ local function GetZoneCenter(zone)
     return vector3(zone.coords.x, zone.coords.y, zone.coords.z)
 end
 
+local function Coalesce(value, default)
+    if value == nil then
+        return default
+    end
+
+    return value
+end
+
 local function GetTextColor(state)
     local fallback = { r = 255, g = 255, b = 255, a = 255 }
     return textConfig[state] or fallback
@@ -59,7 +67,7 @@ local function CreateRedzoneBlips()
         local radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)
         SetBlipRotation(radiusBlip, 0)
         SetBlipColour(radiusBlip, 1)
-        SetBlipAlpha(radiusBlip, (Config.Map and Config.Map.radiusAlpha) or 85)
+        SetBlipAlpha(radiusBlip, Coalesce(Config.Map and Config.Map.radiusAlpha, 85))
 
         local iconBlip = nil
         if zone.blip and zone.blip.enable then
@@ -148,14 +156,14 @@ CreateThread(function()
             sleep = 0
             local color = GetTextColor('insideColor')
             DrawRedzoneText(
-                textConfig.inside or 'Redzone icindesin',
-                textConfig.x or 0.975,
-                textConfig.y or 0.935,
-                textConfig.scale or 0.95,
-                color.r or 230,
-                color.g or 20,
-                color.b or 20,
-                color.a or 255
+                Coalesce(textConfig.inside, 'Redzone icindesin'),
+                Coalesce(textConfig.x, 0.975),
+                Coalesce(textConfig.y, 0.935),
+                Coalesce(textConfig.scale, 0.95),
+                Coalesce(color.r, 230),
+                Coalesce(color.g, 20),
+                Coalesce(color.b, 20),
+                Coalesce(color.a, 255)
             )
         elseif exitTimerEnd > GetGameTimer() then
             sleep = 0
@@ -164,13 +172,13 @@ CreateThread(function()
             local message = BuildExitMessage(leftSec)
             DrawRedzoneText(
                 message,
-                textConfig.x or 0.975,
-                textConfig.y or 0.935,
-                textConfig.scale or 0.95,
-                color.r or 240,
-                color.g or 150,
-                color.b or 20,
-                color.a or 255
+                Coalesce(textConfig.x, 0.975),
+                Coalesce(textConfig.y, 0.935),
+                Coalesce(textConfig.scale, 0.95),
+                Coalesce(color.r, 240),
+                Coalesce(color.g, 150),
+                Coalesce(color.b, 20),
+                Coalesce(color.a, 255)
             )
         end
 
@@ -197,8 +205,8 @@ CreateThread(function()
                     zCoords.x, zCoords.y, zCoords.z - 1.0,
                     0.0, 0.0, 0.0,
                     0.0, 0.0, 0.0,
-                    zone.radius * 2.0, zone.radius * 2.0, Config.MarkerHeight or 4.0,
-                    239, 68, 68, Config.MarkerAlpha or 35,
+                    zone.radius * 2.0, zone.radius * 2.0, Coalesce(Config.MarkerHeight, 4.0),
+                    239, 68, 68, Coalesce(Config.MarkerAlpha, 35),
                     false, false, 2, false, nil, nil, false
                 )
             end

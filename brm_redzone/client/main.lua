@@ -25,9 +25,9 @@ local function ReplaceFirstLiteral(text, token, replacement)
     return text:sub(1, startPos - 1) .. replacement .. text:sub(endPos + 1)
 end
 
-local function GetTextColor(state)
+local function GetTextColor(colorKey)
     local fallback = { r = 255, g = 255, b = 255, a = 255 }
-    return textConfig[state] or fallback
+    return textConfig[colorKey] or fallback
 end
 
 local function GetMarkerColor()

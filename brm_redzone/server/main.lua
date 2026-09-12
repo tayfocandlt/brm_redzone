@@ -34,9 +34,7 @@ local function DetectFramework()
     return Framework
 end
 
-CreateThread(function()
-    DetectFramework()
-end)
+DetectFramework()
 
 AddEventHandler('onResourceStart', function(resourceName)
     if not IsAutoFramework() then

@@ -30,6 +30,10 @@ local function GetTextColor(state)
     return textConfig[state] or fallback
 end
 
+local function GetMarkerColor()
+    return Config.MarkerColor or {}
+end
+
 local function BuildExitMessage(secondsLeft)
     local template = textConfig.exit
 
@@ -211,13 +215,14 @@ CreateThread(function()
 
             if dist <= (zone.radius + (Config.MarkerDrawDistance or 150.0)) then
                 sleep = 0
+                local markerColor = GetMarkerColor()
                 DrawMarker(
                     1,
                     zCoords.x, zCoords.y, zCoords.z - 1.0,
                     0.0, 0.0, 0.0,
                     0.0, 0.0, 0.0,
                     zone.radius * 2.0, zone.radius * 2.0, Coalesce(Config.MarkerHeight, 4.0),
-                    239, 68, 68, Coalesce(Config.MarkerAlpha, 35),
+                    Coalesce(markerColor.r, 239), Coalesce(markerColor.g, 68), Coalesce(markerColor.b, 68), Coalesce(Config.MarkerAlpha, 35),
                     false, false, 2, false, nil, nil, false
                 )
             end

@@ -91,6 +91,7 @@ Config.DrawGroundMarker = true
 Config.MarkerDrawDistance = 150.0
 Config.MarkerHeight = 4.0
 Config.MarkerAlpha = 35
+Config.MarkerColor = { r = 239, g = 68, b = 68 }
 ```
 
 ### Zone ekleme

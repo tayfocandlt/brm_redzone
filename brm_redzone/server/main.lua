@@ -16,7 +16,10 @@ end
 
 local function DetectFramework()
     if not IsAutoFramework() then
-        Framework = FrameworkAliases[Config.Framework] or 'standalone'
+        Framework = assert(
+            FrameworkAliases[Config.Framework],
+            ('Unsupported Config.Framework value: %s'):format(tostring(Config.Framework))
+        )
     elseif GetResourceState('qbx_core') == 'started' then
         Framework = 'qbx'
     elseif GetResourceState('qb-core') == 'started' then

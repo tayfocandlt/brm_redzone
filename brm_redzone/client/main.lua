@@ -94,7 +94,7 @@ local function OnEnterRedzone(zoneIdx)
     end
 end
 
-local function OnExitRedzone(zoneIdx)
+local function OnExitRedzone()
     isInsideRedzone = false
     currentZoneIndex = nil
     exitTimerEnd = GetGameTimer() + ((Config.ExitDisplayTime or 15) * 1000)
@@ -132,7 +132,7 @@ CreateThread(function()
             end
         else
             if isInsideRedzone then
-                OnExitRedzone(currentZoneIndex)
+                OnExitRedzone()
             end
         end
 

@@ -88,11 +88,13 @@ local function DrawRedzoneText(text, x, y, scale, r, g, b, a)
 end
 
 local function CreateRedzoneBlips()
+    local mapConfig = Config.Map or {}
+    local radiusAlpha = Clamp(Coalesce(mapConfig.radiusAlpha, 85), 0, 255)
+    local radiusColor = Coalesce(mapConfig.radiusColor, 1)
+
     for i, zone in ipairs(Config.Zones) do
         local center = GetZoneCenter(zone)
         local radiusBlip = nil
-        local radiusAlpha = Clamp(Coalesce(Config.Map and Config.Map.radiusAlpha, 85), 0, 255)
-        local radiusColor = Coalesce((zone.blip and zone.blip.color), Coalesce(Config.Map and Config.Map.radiusColor, 1))
 
         if radiusAlpha > 0 then
             radiusBlip = AddBlipForRadius(center.x, center.y, center.z, zone.radius)

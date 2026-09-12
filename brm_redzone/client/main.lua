@@ -20,6 +20,10 @@ local function BuildExitMessage(secondsLeft)
         return 'Redzone cikis [' .. secondsLeft .. 's]'
     end
 
+    if template:find('%%ss') then
+        return template:gsub('%%ss', tostring(secondsLeft) .. 's', 1)
+    end
+
     if template:find('%%s') then
         return template:gsub('%%s', tostring(secondsLeft), 1)
     end

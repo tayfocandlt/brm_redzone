@@ -74,7 +74,7 @@ Config.Text = {
 ```
 
 - `inside`: Bölge içindeyken gösterilen metin
-- `exit`: Çıkış geri sayım metni; `%s` yerine saniye değeri yazılır
+- `exit`: Çıkış geri sayım metni; `%ss` kullanırsanız `15s`, `%s` kullanırsanız `15` olarak değiştirilir
 - `x`, `y`, `scale`: Native HUD konum ve ölçek ayarları
 - `alignRight`: Yazıyı sağ hizalı tutar
 - `insideColor`, `exitColor`: RGBA renk yapılandırması

@@ -59,7 +59,7 @@ Desteklenen değerler:
 
 > Not: Alias değerler kullanılsa bile `GetFramework()` export'u her zaman normalize edilmiş şu değerlerden birini döndürür: `esx`, `qb`, `qbx`, `standalone`.
 >
-> Desteklenmeyen bir değer girerseniz resource başlatma sırasında açık hata verir.
+> Büyük/küçük harf fark etmez. Desteklenmeyen bir değer girerseniz resource başlatma sırasında açık hata verir.
 
 ### Yazı ayarları
 ```lua
